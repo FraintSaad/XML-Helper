@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Employees>
+  <Employee surname="Ivanova" name="Lena" total="6003.20">
+    <salary mount="march" amount="1001.1" />
+    <salary mount="january" amount="2001" />
+    <salary mount="february" amount="3001,10" />
+  </Employee>
+  <Employee surname="Ivanova" name="Masha" total="6000.00">
+    <salary mount="march" amount="1000" />
+    <salary mount="january" amount="2000.0" />
+    <salary mount="february" amount="3000" />
+  </Employee>
+</Employees>
