@@ -6,7 +6,20 @@
         xmlns:local="clr-namespace:XML_Helper"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="10">
+        <StackPanel>
+            <Button Name="ConvertBtn" Content="Запустить преобразование" Click="ConvertBtn_Click" Height="30" Margin="0,0,0,10"/>
 
+            <DataGrid Name="dgEmployees" AutoGenerateColumns="False" Height="300">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}" Width="*"/>
+                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*"/>
+                    <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="*"/>
+                    <DataGridTextColumn Header="Январь" Binding="{Binding January}" Width="*"/>
+                    <DataGridTextColumn Header="Февраль" Binding="{Binding February}" Width="*"/>
+                    <DataGridTextColumn Header="Март" Binding="{Binding March}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
     </Grid>
 </Window>
