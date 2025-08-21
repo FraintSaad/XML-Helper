@@ -41,18 +41,11 @@ namespace XML_Helper
             }
         }
 
-        protected override void OnContentRendered(EventArgs e)
-        {
-            base.OnContentRendered(e);
-
-            LoadEmployeesToGrid();
-
-        }
-
-        private void AddEmployeeSums()
+        private void AddEmployeeTotalSalaryAttributes()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(_employeesOutPath);
+
             var employeesNode = doc.SelectNodes("//Employee");
             if (employeesNode == null)
             {
@@ -65,28 +58,28 @@ namespace XML_Helper
                 var salaries = emp.SelectNodes("salary");
                 if (salaries == null)
                 {
-                    throw new NullReferenceException();
+                    throw new NullReferenceException(nameof(salaries));
                 }
 
                 foreach (XmlNode salary in salaries)
                 {
-                    var salaryFromAttribute = salary.Attributes?["amount"];
+                    var salaryFromAttribute = salary.Attributes!["amount"];
                     if (salaryFromAttribute == null)
                     {
-                        throw new NullReferenceException();
+                        throw new NullReferenceException(nameof(salaryFromAttribute));
                     }
                     string amountStr = salaryFromAttribute.Value.Replace(',', '.');
                     total += double.Parse(amountStr, CultureInfo.InvariantCulture);
                 }
                 XmlAttribute totalAttr = doc.CreateAttribute("total");
                 totalAttr.Value = total.ToString("F2", CultureInfo.InvariantCulture);
-                emp.Attributes?.Append(totalAttr);
+                emp.Attributes!.Append(totalAttr);
             }
 
             doc.Save(_employeesOutPath);
         }
 
-        private void AddData1Total()
+        private void AddTotalPayAttributesToData1()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(_data1Path);
@@ -100,17 +93,17 @@ namespace XML_Helper
             double total = 0;
             foreach (XmlNode item in itemsNodeList)
             {
-                string? amountStr = item.Attributes?["amount"]?.Value.Replace(',', '.');
+                string? amountStr = item.Attributes!["amount"]?.Value.Replace(',', '.');
                 if (amountStr == null)
                 {
-                    throw new NullReferenceException();
+                    throw new NullReferenceException(nameof(amountStr));
                 }
                 total += double.Parse(amountStr, CultureInfo.InvariantCulture);
             }
 
             XmlAttribute totalAttr = doc.CreateAttribute("total");
             totalAttr.Value = total.ToString("F2", CultureInfo.InvariantCulture);
-            payNode.Attributes?.Append(totalAttr);
+            payNode.Attributes!.Append(totalAttr);
             doc.Save(_data1Path);
         }
 
@@ -139,7 +132,7 @@ namespace XML_Helper
             return employeeSalaries;
         }
 
-        private void LoadEmployeesToGrid()
+        private void ShowEmployeesSalaryData()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(_employeesOutPath);
@@ -155,12 +148,12 @@ namespace XML_Helper
                 var salaries = employee.SelectNodes("salary");
                 var employeeSalaries = GetEmployeeSalaries(employee);
 
-                var name = employee.Attributes?["name"]?.Value;
-                var surname = employee.Attributes?["surname"]?.Value;
-                var total = employee.Attributes?["total"];
-                if (name == null || surname == null || total == null )
+                var name = employee.Attributes!["name"]?.Value;
+                var surname = employee.Attributes!["surname"]?.Value;
+                var total = employee.Attributes!["total"];
+                if (name == null || surname == null || total == null)
                 {
-                    throw new Exception(); 
+                    throw new NullReferenceException("Отсутствует одно или несколько необходимых значений аттрибутов");
                 }
 
                 EmployeeView ev = new EmployeeView
@@ -170,17 +163,16 @@ namespace XML_Helper
                     Total = Convert.ToDouble(total.Value.Replace(',', '.'), CultureInfo.InvariantCulture),
                     January = employeeSalaries.TryGetValue("january", out double januaryAmount) == true ? januaryAmount : 0,
                     February = employeeSalaries.TryGetValue("february", out double februaryAmount) == true ? februaryAmount : 0,
-                    March = employeeSalaries.TryGetValue("january", out double marchAmount) == true ? marchAmount : 0,
-                    April = employeeSalaries.TryGetValue("january", out double aprilAmount) == true ? aprilAmount : 0,
-                    May = employeeSalaries.TryGetValue("january", out double mayAmount) == true ? mayAmount : 0,
-                    June = employeeSalaries.TryGetValue("january", out double juneAmount) == true ? juneAmount : 0,
-                    July = employeeSalaries.TryGetValue("january", out double julyAmount) == true ? julyAmount : 0,
-                    August = employeeSalaries.TryGetValue("january", out double augustAmount) == true ? augustAmount : 0,
-                    September = employeeSalaries.TryGetValue("january", out double septemberAmount) == true ? septemberAmount : 0,
-                    October = employeeSalaries.TryGetValue("january", out double octoberAmount) == true ? octoberAmount : 0,
-                    November = employeeSalaries.TryGetValue("january", out double novemberAmount) == true ? novemberAmount : 0,
-                    December = employeeSalaries.TryGetValue("january", out double decemberAmount) == true ? decemberAmount : 0,
-                
+                    March = employeeSalaries.TryGetValue("march", out double marchAmount) == true ? marchAmount : 0,
+                    April = employeeSalaries.TryGetValue("april", out double aprilAmount) == true ? aprilAmount : 0,
+                    May = employeeSalaries.TryGetValue("may", out double mayAmount) == true ? mayAmount : 0,
+                    June = employeeSalaries.TryGetValue("june", out double juneAmount) == true ? juneAmount : 0,
+                    July = employeeSalaries.TryGetValue("july", out double julyAmount) == true ? julyAmount : 0,
+                    August = employeeSalaries.TryGetValue("august", out double augustAmount) == true ? augustAmount : 0,
+                    September = employeeSalaries.TryGetValue("september", out double septemberAmount) == true ? septemberAmount : 0,
+                    October = employeeSalaries.TryGetValue("october", out double octoberAmount) == true ? octoberAmount : 0,
+                    November = employeeSalaries.TryGetValue("november", out double novemberAmount) == true ? novemberAmount : 0,
+                    December = employeeSalaries.TryGetValue("december", out double decemberAmount) == true ? decemberAmount : 0,
                 };
 
                 list.Add(ev);
@@ -188,14 +180,14 @@ namespace XML_Helper
 
             dgEmployees.ItemsSource = list;
         }
-        private void ConvertBtn_Click(object sender, RoutedEventArgs e)
+        private void ShowSalariesInfoBtn_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 TransformXml();
-                AddEmployeeSums();
-                AddData1Total();
-                LoadEmployeesToGrid();
+                AddEmployeeTotalSalaryAttributes();
+                AddTotalPayAttributesToData1();
+                ShowEmployeesSalaryData();
             }
             catch (Exception ex)
             {
@@ -203,5 +195,61 @@ namespace XML_Helper
             }
         }
 
+        private void AppendItemNodeToData1(string name, string surname, string month, string amountRaw)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(_data1Path);
+
+            var pay = doc.SelectSingleNode("/Pay");
+            if (pay == null)
+            {
+                throw new Exception("Не найден элемент <Pay> в data1.xml");
+            }
+
+            XmlElement item = doc.CreateElement("item");
+
+            XmlAttribute addingSurname = doc.CreateAttribute("surname");
+            addingSurname.Value = surname;
+            item.Attributes.Append(addingSurname);
+
+            XmlAttribute addingName = doc.CreateAttribute("name");
+            addingName.Value = name;
+            item.Attributes.Append(addingName);
+
+
+            XmlAttribute addingAmount = doc.CreateAttribute("amount");
+            addingAmount.Value = amountRaw;
+            item.Attributes.Append(addingAmount);
+
+            XmlAttribute addingMount = doc.CreateAttribute("mount");
+            addingMount.Value = month;
+            item.Attributes.Append(addingMount);
+
+            pay.AppendChild(item);
+            doc.Save(_data1Path);
+        }
+
+        private void AddDataBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new AddItemWindow { Owner = this };
+            if (dlg.ShowDialog() == true)
+            {
+                try
+                {
+                    AppendItemNodeToData1(dlg.ItemName, dlg.ItemSurname, dlg.ItemMonth, dlg.ItemAmount.ToString());
+
+                    TransformXml();
+                    AddEmployeeTotalSalaryAttributes();
+                    AddTotalPayAttributesToData1();
+                    ShowEmployeesSalaryData();
+
+                    MessageBox.Show("Данные добавлены и пересчитаны.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка: " + ex.Message);
+                }
+            }
+        }
     }
 }

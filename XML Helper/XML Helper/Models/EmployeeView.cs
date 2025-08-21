@@ -8,8 +8,8 @@ namespace XML_Helper.Models
 {
     public class EmployeeView
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string Name { get; set; } = null!;
+        public string Surname { get; set; } = null!;
         public double Total { get; set; }
         public double January { get; set; }
         public double February { get; set; }

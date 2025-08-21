@@ -10,4 +10,13 @@
     <salary mount="january" amount="2000.0" />
     <salary mount="february" amount="3000" />
   </Employee>
+  <Employee surname="Akhmadov" name="Islam" total="5701.02">
+    <salary mount="january" amount="3000" />
+    <salary mount="august" amount="2000" />
+    <salary mount="march" amount="300,70" />
+    <salary mount="february" amount="400,32" />
+  </Employee>
+  <Employee surname="SADKSD" name="KSLDCSDK" total="343245.00">
+    <salary mount="march" amount="343245" />
+  </Employee>
 </Employees>

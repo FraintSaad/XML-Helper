@@ -5,21 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XML_Helper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="480" Width="1200" MinHeight="480" MinWidth="1200">
     <Grid Margin="10">
-        <StackPanel>
-            <Button Name="ConvertBtn" Content="Запустить преобразование" Click="ConvertBtn_Click" Height="30" Margin="0,0,0,10"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <DataGrid Name="dgEmployees" AutoGenerateColumns="False" Height="300">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}" Width="*"/>
-                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*"/>
-                    <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="*"/>
-                    <DataGridTextColumn Header="Январь" Binding="{Binding January}" Width="*"/>
-                    <DataGridTextColumn Header="Февраль" Binding="{Binding February}" Width="*"/>
-                    <DataGridTextColumn Header="Март" Binding="{Binding March}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+        <DataGrid Name="dgEmployees" AutoGenerateColumns="False" MinHeight="300" Grid.Row="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}" Width="*"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="*"/>
+                <DataGridTextColumn Header="Январь" Binding="{Binding January}" Width="*"/>
+                <DataGridTextColumn Header="Февраль" Binding="{Binding February}" Width="*"/>
+                <DataGridTextColumn Header="Март" Binding="{Binding March}" Width="*"/>
+                <DataGridTextColumn Header="Апрель" Binding="{Binding April}" Width="*"/>
+                <DataGridTextColumn Header="Май" Binding="{Binding May}" Width="*"/>
+                <DataGridTextColumn Header="Июнь" Binding="{Binding June}" Width="*"/>
+                <DataGridTextColumn Header="Июль" Binding="{Binding July}" Width="*"/>
+                <DataGridTextColumn Header="Август" Binding="{Binding August}" Width="*"/>
+                <DataGridTextColumn Header="Сентябрь" Binding="{Binding September}" Width="*"/>
+                <DataGridTextColumn Header="Октябрь" Binding="{Binding October}" Width="*"/>
+                <DataGridTextColumn Header="Ноябрь" Binding="{Binding November}" Width="*"/>
+                <DataGridTextColumn Header="Декабрь" Binding="{Binding December}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Margin="40, 40, 40, 0" Grid.Row="1">
+            <Button Name="ShowSalariesInfoBtn" Content="Показать информацию о выплатах" Click="ShowSalariesInfoBtn_Click"
+                     Height="60" Width="400" HorizontalAlignment="Right" Cursor="Hand" />
+            <Button Name="AddDataBtn" Content="Добавить данные" Click="AddDataBtn_Click"
+                     Height="60" Width="400" HorizontalAlignment="Left" Cursor="Hand"/>
+        </Grid>
     </Grid>
 </Window>
