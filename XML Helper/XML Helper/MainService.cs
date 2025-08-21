@@ -11,13 +11,13 @@ using XML_Helper.Models;
 
 namespace XML_Helper
 {
-    internal class MainWindowService
+    internal class MainService
     {
         private readonly string _data1Path;
         private readonly string _xsltFilePath;
         private readonly string _employeesOutPath;
 
-        internal MainWindowService()
+        internal MainService()
         {
             string inputDirPath = Path.GetFullPath(Path.Combine("..", "..", "..", "..", "..", "input"));
             _data1Path = Path.Combine(inputDirPath, "data1.xml");

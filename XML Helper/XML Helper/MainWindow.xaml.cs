@@ -13,12 +13,12 @@ namespace XML_Helper
 
     public partial class MainWindow : Window
     {
-        MainWindowService _mainWindowService;
+        MainService _mainService;
 
         public MainWindow()
         {
             InitializeComponent();
-            _mainWindowService = new MainWindowService();
+            _mainService = new MainService();
            
         }
         
@@ -26,11 +26,11 @@ namespace XML_Helper
         {
             try
             {
-                _mainWindowService.TransformXml();
-                _mainWindowService.AddEmployeeTotalSalaryAttributes();
-                _mainWindowService.AddTotalPayAttributesToData1();
-                _mainWindowService.ShowEmployeesSalaryData();
-                var employees = _mainWindowService.ShowEmployeesSalaryData();
+                _mainService.TransformXml();
+                _mainService.AddEmployeeTotalSalaryAttributes();
+                _mainService.AddTotalPayAttributesToData1();
+                _mainService.ShowEmployeesSalaryData();
+                var employees = _mainService.ShowEmployeesSalaryData();
                 dgEmployees.ItemsSource = employees;
             }
             catch (Exception ex)
@@ -46,12 +46,12 @@ namespace XML_Helper
             {
                 try
                 {
-                    _mainWindowService.AppendItemNodeToData1(dlg.ItemName, dlg.ItemSurname, dlg.ItemMonth, dlg.ItemAmount.ToString());
+                    _mainService.AppendItemNodeToData1(dlg.ItemName, dlg.ItemSurname, dlg.ItemMonth, dlg.ItemAmount.ToString());
 
-                    _mainWindowService.TransformXml();
-                    _mainWindowService.AddEmployeeTotalSalaryAttributes();
-                    _mainWindowService.AddTotalPayAttributesToData1();
-                    var employees = _mainWindowService.ShowEmployeesSalaryData();
+                    _mainService.TransformXml();
+                    _mainService.AddEmployeeTotalSalaryAttributes();
+                    _mainService.AddTotalPayAttributesToData1();
+                    var employees = _mainService.ShowEmployeesSalaryData();
                     dgEmployees.ItemsSource = employees;
 
                     MessageBox.Show("Данные добавлены и пересчитаны.");
