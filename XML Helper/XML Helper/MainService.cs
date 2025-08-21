@@ -76,12 +76,12 @@ namespace XML_Helper
             doc.Save(_employeesOutPath);
         }
 
-        internal List<EmployeeView> ShowEmployeesSalaryData()
+        internal List<EmployeeViewModel> GetEmployeesSalaryData()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(_employeesOutPath);
 
-            List<EmployeeView> list = new List<EmployeeView>();
+            List<EmployeeViewModel> list = new List<EmployeeViewModel>();
             var employees = doc.SelectNodes("//Employee");
             if (employees == null)
             {
@@ -100,7 +100,7 @@ namespace XML_Helper
                     throw new NullReferenceException("Отсутствует одно или несколько необходимых значений аттрибутов");
                 }
 
-                EmployeeView ev = new EmployeeView
+                EmployeeViewModel ev = new EmployeeViewModel
                 {
                     Name = name,
                     Surname = surname,

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XML_Helper.Models
 {
-    public class EmployeeView
+    public class EmployeeViewModel
     {
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;

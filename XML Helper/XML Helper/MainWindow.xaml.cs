@@ -29,8 +29,7 @@ namespace XML_Helper
                 _mainService.TransformXml();
                 _mainService.AddEmployeeTotalSalaryAttributes();
                 _mainService.AddTotalPayAttributesToData1();
-                _mainService.ShowEmployeesSalaryData();
-                var employees = _mainService.ShowEmployeesSalaryData();
+                var employees = _mainService.GetEmployeesSalaryData();
                 dgEmployees.ItemsSource = employees;
             }
             catch (Exception ex)
@@ -51,7 +50,7 @@ namespace XML_Helper
                     _mainService.TransformXml();
                     _mainService.AddEmployeeTotalSalaryAttributes();
                     _mainService.AddTotalPayAttributesToData1();
-                    var employees = _mainService.ShowEmployeesSalaryData();
+                    var employees = _mainService.GetEmployeesSalaryData();
                     dgEmployees.ItemsSource = employees;
 
                     MessageBox.Show("Данные добавлены и пересчитаны.");
