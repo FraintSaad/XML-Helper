@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Pay total="17704.22">
+<Pay total="18039.54">
   <item name="Lena" surname="Ivanova" amount="1001.1" mount="march" />
   <item name="Lena" surname="Ivanova" amount="2001" mount="january" />
   <item name="Lena" surname="Ivanova" amount="3001,10" mount="february" />
@@ -10,4 +10,5 @@
   <item name="Islam" surname="Akhmadov" amount="2000" mount="august" />
   <item surname="Akhmadov" name="Islam" amount="300,70" mount="march" />
   <item surname="Akhmadov" name="Islam" amount="400,32" mount="february" />
+  <item surname="Akhmadov" name="Islam" amount="335,324" mount="november" />
 </Pay>

@@ -14,6 +14,7 @@ namespace XML_Helper
     internal class MainService
     {
         private readonly string _data1Path;
+        private readonly string _data2Path;
         private readonly string _xsltFilePath;
         private readonly string _employeesOutPath;
 
@@ -21,7 +22,8 @@ namespace XML_Helper
         {
             string inputDirPath = Path.GetFullPath(Path.Combine("..", "..", "..", "..", "..", "input"));
             _data1Path = Path.Combine(inputDirPath, "data1.xml");
-            _xsltFilePath = Path.Combine(inputDirPath, "convert_to_employees.xslt");
+            _data2Path = Path.Combine(inputDirPath, "data2.xml");
+            _xsltFilePath = Path.Combine(inputDirPath, "convert_data1_to_employees.xslt");
             _employeesOutPath = Path.Combine(inputDirPath, "employees.xml");
         }
         internal void TransformXml()

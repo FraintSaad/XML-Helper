@@ -10,10 +10,11 @@
     <salary mount="january" amount="2000.0" />
     <salary mount="february" amount="3000" />
   </Employee>
-  <Employee surname="Akhmadov" name="Islam" total="5701.02">
+  <Employee surname="Akhmadov" name="Islam" total="6036.34">
     <salary mount="january" amount="3000" />
     <salary mount="august" amount="2000" />
     <salary mount="march" amount="300,70" />
     <salary mount="february" amount="400,32" />
+    <salary mount="november" amount="335,324" />
   </Employee>
 </Employees>
