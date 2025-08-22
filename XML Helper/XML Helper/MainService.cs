@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Globalization;
 using System.IO;
-using System.Windows;
-using System.Windows.Media;
 using System.Xml;
 using System.Xml.Xsl;
 using XML_Helper.Models;
@@ -11,21 +9,33 @@ namespace XML_Helper
 {
     internal class MainService
     {
-        public string _dataFilePath;
-        public string _xsltFilePath;
-        private readonly string _employeesOutPath;
+        private string _dataFilePath;
+        private string _converterFilePath;
+        private string _employeesOutPath;
+        internal string DataFileName => string.IsNullOrEmpty(_dataFilePath) ? string.Empty : Path.GetFileName(_dataFilePath);
+        internal string XsltFileName => string.IsNullOrEmpty(_converterFilePath) ? string.Empty : Path.GetFileName(_converterFilePath);
 
-        internal MainService()
-        {
-            string inputDirPath = Path.GetFullPath(Path.Combine("..", "..", "..", "..", "..", "input"));
-            _employeesOutPath = Path.Combine(inputDirPath, "employees.xml");
-        }
         internal void TransformXml()
         {
             try
             {
+                if (string.IsNullOrEmpty(_employeesOutPath))
+                {
+                    var saveFileDialog = new SaveFileDialog
+                    {
+                        Title = "Сохранить employees.xml",
+                        Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*",
+                        FileName = "employees.xml"
+                    };
+
+                    if (saveFileDialog.ShowDialog() != true)
+                    {
+                        throw new Exception("Пожалуйста выберите место сохранения для выходного файла");
+                    }
+                    _employeesOutPath = saveFileDialog.FileName;
+                }
                 XslCompiledTransform xslt = new XslCompiledTransform();
-                xslt.Load(_xsltFilePath);
+                xslt.Load(_converterFilePath);
                 xslt.Transform(_dataFilePath, _employeesOutPath);
             }
             catch (Exception ex)
@@ -57,7 +67,7 @@ namespace XML_Helper
             doc.Save(_employeesOutPath);
         }
 
-        private void AddAttribute(XmlDocument doc,XmlNode node, string attributeName, string attributeValue)
+        private void AddAttribute(XmlDocument doc, XmlNode node, string attributeName, string attributeValue)
         {
             XmlAttribute totalAttr = doc.CreateAttribute(attributeName);
             totalAttr.Value = attributeValue;
@@ -213,8 +223,8 @@ namespace XML_Helper
 
             if (openFileDialog.ShowDialog() == true)
             {
-                _xsltFilePath = openFileDialog.FileName;
-                return Path.GetFileName(_xsltFilePath);
+                _converterFilePath = openFileDialog.FileName;
+                return Path.GetFileName(_converterFilePath);
             }
             else
             {

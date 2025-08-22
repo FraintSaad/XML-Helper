@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Pay total="0.00">
+<Pay total="39614.00">
   <january>
     <item name="Lena" surname="Ivanova" amount="2001" mount="january" />
     <item name="Masha" surname="Ivanova" amount="2000.0" mount="january" />
@@ -12,4 +12,7 @@
     <item name="Lena" surname="Ivanova" amount="1001.1" mount="march" />
     <item name="Masha" surname="Ivanova" amount="1000" mount="march" />
   </march>
+  <item surname="trefws" name="sdcds" amount="32934" mount="february" />
+  <item surname="skcsksdn" name="askaldfmk" amount="3445" mount="january" />
+  <item surname="ewdefsd" name="dvdfg" amount="3235" mount="january" />
 </Pay>

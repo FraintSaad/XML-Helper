@@ -1,12 +1,5 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Xml;
-using System.Xml.Xsl;
-using XML_Helper.Models;
-using System.Linq;
-using System.Globalization;
-using Microsoft.Win32;
 
 namespace XML_Helper
 {
@@ -19,9 +12,9 @@ namespace XML_Helper
         {
             InitializeComponent();
             _mainService = new MainService();
-           
+
         }
-        
+
         private void ShowSalariesInfoBtn_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -30,7 +23,7 @@ namespace XML_Helper
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка: " + ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -47,7 +40,7 @@ namespace XML_Helper
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Ошибка: " + ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -61,22 +54,42 @@ namespace XML_Helper
             dgEmployees.ItemsSource = employees;
         }
 
-        private void ChooseXsltFileBtn_Click(object sender, RoutedEventArgs e)
+        private void UpdateButtonsState()
         {
-            string result = _mainService.ChooseXSLTFile();
-            if (!string.IsNullOrEmpty(result))
-            {
-                XsltFilePathText.Text = result;
-            }
+            AddDataBtn.IsEnabled = !string.IsNullOrEmpty(_mainService.DataFileName);
+            ShowSalariesInfoBtn.IsEnabled = !string.IsNullOrEmpty(_mainService.DataFileName) &&
+                                           !string.IsNullOrEmpty(_mainService.XsltFileName);
+
+            if (!string.IsNullOrEmpty(_mainService.DataFileName))
+                ChooseDataFileBtn.Background = Brushes.LightGreen;
+
+            if (!string.IsNullOrEmpty(_mainService.XsltFileName))
+                ChooseXsltFileBtn.Background = Brushes.LightGreen;
         }
 
         private void ChooseDataFileBtn_Click(object sender, RoutedEventArgs e)
         {
-           string result = _mainService.ChooseDataFile();
-            if (!string.IsNullOrEmpty(result))
+            string fileName = _mainService.ChooseDataFile();
+            if (!string.IsNullOrEmpty(fileName))
             {
-                DataFilePathText.Text = result;
+                DataFilePathText.Text = fileName;
+                UpdateButtonsState();
             }
+        }
+
+        private void ChooseXsltFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string fileName = _mainService.ChooseXSLTFile();
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                XsltFilePathText.Text = fileName;
+                UpdateButtonsState();
+            }
+        }
+
+        private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
