@@ -32,11 +32,35 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Margin="40, 40, 40, 0" Grid.Row="1">
-            <Button Name="ShowSalariesInfoBtn" Content="Показать информацию о выплатах" Click="ShowSalariesInfoBtn_Click"
-                     Height="60" Width="400" HorizontalAlignment="Right" Cursor="Hand" />
-            <Button Name="AddDataBtn" Content="Добавить данные" Click="AddDataBtn_Click"
-                     Height="60" Width="400" HorizontalAlignment="Left" Cursor="Hand"/>
+        <Grid Margin="40, 40, 40, 30" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="ShowSalariesInfoBtn" Content="Показать таблицу" 
+                    Click="ShowSalariesInfoBtn_Click"
+                    Grid.Column="0" Height="30" Width="130" 
+                    HorizontalAlignment="Left" Cursor="Hand" Margin="110,0,0,50" />
+            <Button Name="AddDataBtn" Content="Добавить данные"
+                    Click="AddDataBtn_Click"
+                    Grid.Column="0"
+                    Height="30" Width="130" 
+                    HorizontalAlignment="Left" Cursor="Hand"  Margin="110,40,0,0"/>
+            <Button Name="ChooseXsltFileBtn" Content="Выбрать xslt-файл"
+                    Click="ChooseXsltFileBtn_Click" 
+                    Grid.Column="1" 
+                    Height="30" Width="130" Margin="0,0,110,50" 
+                    HorizontalAlignment="Right" Cursor="Hand" Grid.ColumnSpan="3"/>
+            <TextBlock Name="XsltFilePathText" 
+                   Foreground="Gray" 
+                   Margin="550,0,80,50"/>
+            <Button Name="ChooseDataFileBtn" Content="Выбрать data-файл"
+                    Click="ChooseDataFileBtn_Click" 
+                    Grid.Column="1" 
+                    Height="30" Width="130" Margin="0,40,110,0"
+                    HorizontalAlignment="Right" Cursor="Hand" Grid.ColumnSpan="3"/>
+            <TextBlock Name="DataFilePathText" 
+                   Foreground="Gray" Margin="550,50,80,0"/>
         </Grid>
     </Grid>
 </Window>

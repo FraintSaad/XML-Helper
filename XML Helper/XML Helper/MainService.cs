@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 using System.Xml;
 using System.Xml.Xsl;
 using XML_Helper.Models;
@@ -13,17 +11,13 @@ namespace XML_Helper
 {
     internal class MainService
     {
-        private readonly string _data1Path;
-        private readonly string _data2Path;
-        private readonly string _xsltFilePath;
+        public string _dataFilePath;
+        public string _xsltFilePath;
         private readonly string _employeesOutPath;
 
         internal MainService()
         {
             string inputDirPath = Path.GetFullPath(Path.Combine("..", "..", "..", "..", "..", "input"));
-            _data1Path = Path.Combine(inputDirPath, "data1.xml");
-            _data2Path = Path.Combine(inputDirPath, "data2.xml");
-            _xsltFilePath = Path.Combine(inputDirPath, "convert_data1_to_employees.xslt");
             _employeesOutPath = Path.Combine(inputDirPath, "employees.xml");
         }
         internal void TransformXml()
@@ -32,7 +26,7 @@ namespace XML_Helper
             {
                 XslCompiledTransform xslt = new XslCompiledTransform();
                 xslt.Load(_xsltFilePath);
-                xslt.Transform(_data1Path, _employeesOutPath);
+                xslt.Transform(_dataFilePath, _employeesOutPath);
             }
             catch (Exception ex)
             {
@@ -44,7 +38,6 @@ namespace XML_Helper
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(_employeesOutPath);
-
             var employeesNode = doc.SelectNodes("//Employee");
             if (employeesNode == null)
             {
@@ -53,29 +46,22 @@ namespace XML_Helper
 
             foreach (XmlNode emp in employeesNode)
             {
-                double total = 0;
-                var salaries = emp.SelectNodes("salary");
-                if (salaries == null)
+                var salaryNodes = emp.SelectNodes("salary");
+                if (salaryNodes == null)
                 {
-                    throw new NullReferenceException(nameof(salaries));
+                    throw new NullReferenceException(nameof(salaryNodes));
                 }
-
-                foreach (XmlNode salary in salaries)
-                {
-                    var salaryFromAttribute = salary.Attributes!["amount"];
-                    if (salaryFromAttribute == null)
-                    {
-                        throw new NullReferenceException(nameof(salaryFromAttribute));
-                    }
-                    string amountStr = salaryFromAttribute.Value.Replace(',', '.');
-                    total += double.Parse(amountStr, CultureInfo.InvariantCulture);
-                }
-                XmlAttribute totalAttr = doc.CreateAttribute("total");
-                totalAttr.Value = total.ToString("F2", CultureInfo.InvariantCulture);
-                emp.Attributes!.Append(totalAttr);
+                var total = GetTotal(salaryNodes);
+                AddAttribute(doc, emp, "total", total.ToString("F2", CultureInfo.InvariantCulture));
             }
-
             doc.Save(_employeesOutPath);
+        }
+
+        private void AddAttribute(XmlDocument doc,XmlNode node, string attributeName, string attributeValue)
+        {
+            XmlAttribute totalAttr = doc.CreateAttribute(attributeName);
+            totalAttr.Value = attributeValue;
+            node.Attributes!.Append(totalAttr);
         }
 
         internal List<EmployeeViewModel> GetEmployeesSalaryData()
@@ -130,29 +116,16 @@ namespace XML_Helper
         internal void AddTotalPayAttributesToData1()
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(_data1Path);
+            doc.Load(_dataFilePath);
             var payNode = doc.SelectSingleNode("//Pay");
-            var itemsNodeList = doc.SelectNodes("//Pay/item");
-            if (payNode == null || itemsNodeList == null)
+            var salaryNodes = doc.SelectNodes("//Pay/item");
+            if (payNode == null || salaryNodes == null)
             {
                 throw new NullReferenceException();
             }
-
-            double total = 0;
-            foreach (XmlNode item in itemsNodeList)
-            {
-                string? amountStr = item.Attributes!["amount"]?.Value.Replace(',', '.');
-                if (amountStr == null)
-                {
-                    throw new NullReferenceException(nameof(amountStr));
-                }
-                total += double.Parse(amountStr, CultureInfo.InvariantCulture);
-            }
-
-            XmlAttribute totalAttr = doc.CreateAttribute("total");
-            totalAttr.Value = total.ToString("F2", CultureInfo.InvariantCulture);
-            payNode.Attributes!.Append(totalAttr);
-            doc.Save(_data1Path);
+            var total = GetTotal(salaryNodes);
+            AddAttribute(doc, payNode, "total", total.ToString("F2", CultureInfo.InvariantCulture));
+            doc.Save(_dataFilePath);
         }
 
         internal Dictionary<string, double> GetEmployeeSalaries(XmlNode employee)
@@ -183,7 +156,7 @@ namespace XML_Helper
         internal void AppendItemNodeToData1(string name, string surname, string month, string amountRaw)
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(_data1Path);
+            doc.Load(_dataFilePath);
 
             var pay = doc.SelectSingleNode("/Pay");
             if (pay == null)
@@ -211,7 +184,61 @@ namespace XML_Helper
             item.Attributes.Append(addingMount);
 
             pay.AppendChild(item);
-            doc.Save(_data1Path);
+            doc.Save(_dataFilePath);
+        }
+
+        internal double GetTotal(XmlNodeList salaryNodes)
+        {
+            double total = 0;
+            foreach (XmlNode salaryNode in salaryNodes)
+            {
+                var salaryFromAttribute = salaryNode.Attributes!["amount"];
+                if (salaryFromAttribute == null)
+                {
+                    throw new NullReferenceException(nameof(salaryFromAttribute));
+                }
+                string amountStr = salaryFromAttribute.Value.Replace(',', '.');
+                total += double.Parse(amountStr, CultureInfo.InvariantCulture);
+            }
+            return total;
+        }
+
+        internal string ChooseXSLTFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "XSLT files (*.xslt;*.xsl)|*.xslt;*.xsl|All files (*.*)|*.*",
+                Title = "Выберите XSLT-файл"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                _xsltFilePath = openFileDialog.FileName;
+                return Path.GetFileName(_xsltFilePath);
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        internal string ChooseDataFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*",
+                Title = "Выберите XML data-файл"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                _dataFilePath = openFileDialog.FileName;
+                return Path.GetFileName(_dataFilePath);
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
     }
 }

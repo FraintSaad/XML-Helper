@@ -1,20 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Employees>
-  <Employee surname="Ivanova" name="Lena" total="6003.20">
-    <salary mount="march" amount="1001.1" />
+  <Employee name="Lena" surname="Ivanova" total="6003.20">
     <salary mount="january" amount="2001" />
     <salary mount="february" amount="3001,10" />
+    <salary mount="march" amount="1001.1" />
   </Employee>
-  <Employee surname="Ivanova" name="Masha" total="6000.00">
-    <salary mount="march" amount="1000" />
+  <Employee name="Masha" surname="Ivanova" total="6000.00">
     <salary mount="january" amount="2000.0" />
     <salary mount="february" amount="3000" />
-  </Employee>
-  <Employee surname="Akhmadov" name="Islam" total="6036.34">
-    <salary mount="january" amount="3000" />
-    <salary mount="august" amount="2000" />
-    <salary mount="march" amount="300,70" />
-    <salary mount="february" amount="400,32" />
-    <salary mount="november" amount="335,324" />
+    <salary mount="march" amount="1000" />
   </Employee>
 </Employees>
